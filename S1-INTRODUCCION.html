@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoolHunting — Sesión 1: Introducción (Teoría)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}]});"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>if(!window.THREE){document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"><\/script>');}</script>
+<style>
+:root{--bg:#04040a;--cyan:#00f0ff;--magenta:#ff2ec4;--yellow:#ffe600;--green:#39ff14;--orange:#ff9500;--purple:#a855f7;--ucsur:#1b6ca8;--ucsur2:#e8871a;--card:rgba(255,255,255,.05);--border:rgba(0,240,255,.25)}
+*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%}
+body{background:var(--bg);color:#eaf6ff;font-family:'Segoe UI',system-ui,Arial,sans-serif;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(1100px 600px at 82% -10%,rgba(0,240,255,.13),transparent 60%),radial-gradient(900px 520px at 8% 110%,rgba(255,46,196,.11),transparent 60%),radial-gradient(700px 420px at 50% 55%,rgba(168,85,247,.08),transparent 60%);animation:hue 14s ease-in-out infinite alternate}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;background-image:radial-gradient(1.5px 1.5px at 25% 35%,rgba(0,240,255,.8) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 75% 65%,rgba(255,46,196,.8) 50%,transparent 51%),radial-gradient(1.2px 1.2px at 50% 20%,rgba(255,230,0,.8) 50%,transparent 51%),radial-gradient(1.2px 1.2px at 12% 78%,rgba(57,255,20,.7) 50%,transparent 51%);background-size:340px 340px,420px 420px,260px 260px,380px 380px;animation:drift 90s linear infinite}
+@keyframes hue{to{filter:hue-rotate(40deg)}}@keyframes drift{to{background-position:340px 680px,-420px 840px,260px -520px,-380px 760px}}
+header{position:fixed;top:0;left:0;right:0;height:64px;z-index:50;display:flex;align-items:center;gap:14px;padding:0 18px;background:rgba(5,6,16,.93);border-bottom:1px solid var(--border)}
+#logoWrap{background:#fff;border-radius:10px;padding:3px 10px;display:flex;align-items:center;flex-shrink:0}#logoWrap img{height:40px;display:block}
+.brand{font-weight:800;font-size:15px;background:linear-gradient(90deg,var(--cyan),var(--magenta));-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}
+.head-info{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;font-size:12px}
+.chip{padding:4px 12px;border-radius:20px;border:1px solid var(--border);color:var(--cyan);background:rgba(0,240,255,.06);font-weight:600}
+.chip.doc{border-color:rgba(255,46,196,.45);color:var(--magenta);background:rgba(255,46,196,.07)}
+.chip.uni{border-color:rgba(232,135,26,.5);color:var(--ucsur2);background:rgba(232,135,26,.08)}
+#progress{position:fixed;top:64px;left:0;height:3px;width:0;z-index:60;background:linear-gradient(90deg,var(--cyan),var(--magenta),var(--yellow));box-shadow:0 0 14px var(--cyan);transition:width .45s}
+#stage{position:fixed;inset:64px 0 78px 0;z-index:10}
+.slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .55s;overflow-y:auto;padding:28px 5vw 60px}
+.slide.active{opacity:1;pointer-events:auto}
+h1.big{font-size:clamp(28px,4.8vw,58px);line-height:1.05;font-weight:900;background:linear-gradient(90deg,var(--cyan) 10%,var(--magenta) 55%,var(--yellow) 95%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(0,240,255,.35))}
+h2.sec{font-size:clamp(22px,3.2vw,34px);font-weight:900;margin-bottom:6px;background:linear-gradient(90deg,var(--cyan),var(--magenta));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:#9fd8e8;font-size:15px;margin-bottom:18px;max-width:920px;line-height:1.5}
+.kicker{display:inline-block;font-size:12px;letter-spacing:3px;color:var(--yellow);border:1px solid rgba(255,230,0,.4);padding:5px 14px;border-radius:20px;margin-bottom:14px;background:rgba(255,230,0,.06);text-transform:uppercase;font-weight:700}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;backdrop-filter:blur(6px)}
+.grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.neon-c{color:var(--cyan)}.neon-m{color:var(--magenta)}.neon-y{color:var(--yellow)}.neon-g{color:var(--green)}.neon-o{color:var(--orange)}.neon-p{color:var(--purple)}
+.tag{display:inline-block;font-size:12px;padding:3px 10px;border-radius:14px;margin:3px 4px 3px 0;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05)}
+.btn{cursor:pointer;border:1px solid var(--cyan);color:var(--cyan);background:rgba(0,240,255,.07);padding:10px 22px;border-radius:10px;font-size:15px;font-weight:700;text-transform:uppercase;transition:.25s;text-decoration:none;display:inline-block}
+.btn:hover{background:rgba(0,240,255,.2);box-shadow:0 0 18px rgba(0,240,255,.5);transform:translateY(-2px)}
+.btn.mg{border-color:var(--magenta);color:var(--magenta);background:rgba(255,46,196,.07)}.btn.yl{border-color:var(--yellow);color:var(--yellow);background:rgba(255,230,0,.07)}.btn.gr{border-color:var(--green);color:var(--green);background:rgba(57,255,20,.07)}
+.btn.sm{padding:6px 14px;font-size:12.5px}.btn.active-opt{background:rgba(0,240,255,.28);box-shadow:0 0 16px rgba(0,240,255,.55)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+footer{position:fixed;bottom:0;left:0;right:0;height:78px;z-index:50;display:flex;align-items:center;gap:16px;padding:0 22px;background:rgba(5,6,16,.93);border-top:1px solid var(--border)}
+#slideSlider{flex:1}#slideCounter{font-size:13px;color:#9fd8e8;min-width:64px;text-align:center;font-weight:700}
+.stat{font-size:26px;font-weight:900}.stat-lbl{font-size:11.5px;letter-spacing:1.5px;color:#8fb8c6;text-transform:uppercase}
+.tl-item{cursor:pointer;transition:.25s}.tl-item:hover{transform:translateY(-3px);box-shadow:0 0 20px rgba(0,240,255,.25)}
+canvas.view{width:100%;border:1px solid var(--border);border-radius:14px;background:rgba(0,0,10,.5)}
+.center{text-align:center}
+.note{border-left:4px solid var(--yellow);background:rgba(255,230,0,.06);padding:10px 14px;border-radius:0 10px 10px 0;font-size:13.5px;color:#f2ecc0;margin-top:12px}
+.katex{color:#fff}
+.flash .ans{display:none;margin-top:10px;border-left:3px solid var(--green);padding:8px 12px;background:rgba(57,255,20,.08);color:#c9ffd9;font-size:13.5px}
+.flash.open .ans{display:block}
+.aviso{border:2px dashed var(--magenta);background:rgba(255,46,196,.08);border-radius:14px;padding:18px;font-size:17px;font-weight:800;color:var(--magenta);text-align:center;box-shadow:0 0 24px rgba(255,46,196,.25)}
+svg{display:block;margin:0 auto}
+</style>
+</head>
+<body>
+<header>
+ <div id="logoWrap"><img src="UCS_logo.png" alt="Universidad Científica del Sur" onerror="this.onerror=null;this.style.display='none';document.getElementById('logoFallback').style.display='block';">
+  <svg id="logoFallback" viewBox="0 0 260 60" height="40" style="display:none"><text x="0" y="30" font-size="26" font-weight="800" fill="#1b6ca8" font-family="Arial">CIENTÍFICA</text><text x="0" y="52" font-size="14" fill="#e8871a" font-family="Arial" letter-spacing="4">DEL SUR</text></svg></div>
+ <div class="brand">⚙ COOLHUNTING · TEORÍA</div>
+ <div class="head-info"><span class="chip uni">Universidad Científica del Sur</span><span class="chip">Sesión 1 · Introducción</span><span class="chip doc">👷 Eduardo Olivos</span></div>
+</header>
+<div id="progress"></div>
+<div id="stage">
+
+<section class="slide active" id="s0"><div style="min-height:82%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
+ <span class="kicker">Sesión 01 · 2026-II</span>
+ <h1 class="big">COOLHUNTING E INTELIGENCIA<br>COMERCIAL INTERNACIONAL</h1>
+ <p class="sub center" style="margin-top:14px">Reconocer la importancia de contar con <b class="neon-c">información estratégica adecuada y oportuna</b> en el entorno de los negocios internacionales.</p>
+ <div class="card"><b class="neon-y">Curso:</b> CoolHunting | <b class="neon-y">Universidad:</b> Científica del Sur | <b class="neon-y">Docente:</b> Eduardo Olivos</div>
+ <div class="btnrow" style="justify-content:center;margin-top:26px"><button class="btn" onclick="goTo(1)">▶ Iniciar la clase</button></div>
+</div></section>
+
+<section class="slide" id="s1"><span class="kicker">Hoja de ruta</span><h2 class="sec">🗺 Hoja de ruta de la sesión</h2>
+ <p class="sub">Haz clic en cada bloque (avanzamos al ritmo del grupo):</p>
+ <div class="grid g4">
+  <div class="card tl-item" onclick="goTo(2)"><div class="stat neon-c">🎯</div><div class="stat-lbl">Logro y reto</div></div>
+  <div class="card tl-item" onclick="goTo(4)"><div class="stat neon-y">🕶</div><div class="stat-lbl">Introducción al Coolhunting</div></div>
+  <div class="card tl-item" onclick="goTo(6)"><div class="stat neon-m">🌐</div><div class="stat-lbl">Inteligencia Comercial Intl.</div></div>
+  <div class="card tl-item" onclick="goTo(9)"><div class="stat neon-o">⚠</div><div class="stat-lbl">Errores y fuentes</div></div>
+  <div class="card tl-item" onclick="goTo(13)"><div class="stat neon-g">⚖</div><div class="stat-lbl">Ética (ESOMAR)</div></div>
+  <div class="card tl-item" onclick="goTo(15)"><div class="stat neon-p">🧊</div><div class="stat-lbl">3D y síntesis</div></div>
+  <div class="card tl-item" onclick="goTo(16)"><div class="stat neon-c">🎯</div><div class="stat-lbl">Repaso</div></div>
+  <div class="card tl-item" onclick="goTo(17)"><div class="stat neon-m">📢</div><div class="stat-lbl">Cierre</div></div>
+ </div>
+ <div class="note">💡 <b>Repasa con este archivo:</b> todas las preguntas de la evaluación salen de aquí.</div>
+</section>
+
+<section class="slide" id="s2"><span class="kicker">Momento 1 · Utilidad</span><h2 class="sec">🎯 Logro de la sesión y reto</h2>
+ <div class="grid g2">
+  <div class="card"><h3 class="neon-c">Logro de la sesión</h3><p style="font-size:15px;line-height:1.6;margin-top:6px">Al finalizar, el estudiante <b>reconoce la importancia</b> de contar con información estratégica <b>adecuada y oportuna</b> en el entorno de los negocios internacionales.</p>
+   <h3 class="neon-m" style="margin-top:14px">Reto</h3><p style="font-size:14px;line-height:1.6;margin-top:6px">🕶 Detecta una <b>tendencia “cool”</b> emergente y explica qué oportunidad de negocio internacional genera.</p></div>
+  <div class="card"><h3 class="neon-y">Índice de la sesión</h3><ul style="font-size:14px;line-height:2;padding-left:18px"><li>1. Introducción al Coolhunting.</li><li>2. Introducción a la Inteligencia Comercial Internacional.</li><li>3. Fundamentos de la ICI.</li><li>4. Clasificación de fuentes.</li><li>5. Ética de la investigación de mercados.</li></ul></div>
+ </div>
+</section>
+
+<section class="slide" id="s3"><span class="kicker">Innovación · ¿Qué observas?</span><h2 class="sec"> ¿Qué es “cool”?</h2>
+ <p class="sub">Pulsa cada concepto y descubre su diferencia:</p>
+ <div class="btnrow" id="coolBtns"></div>
+ <div class="card" id="coolInfo" style="min-height:80px"><b class="neon-y">Selecciona un concepto</b>.</div>
+ <div class="note">💬 “Las <b>tendencias</b> generan <b>oportunidades</b>; las <b>modas</b> generan <b>competencia</b>.”</div>
+</section>
+
+<section class="slide" id="s4"><span class="kicker">1 · Coolhunting</span><h2 class="sec">🕶 Introducción al Coolhunting</h2>
+ <div class="card" style="margin-bottom:14px"><p style="font-size:15px;line-height:1.6">Es la <b class="neon-c">investigación de tendencias</b> que intenta captar señales de elementos “<b>COOL</b>” cuando empiezan a vislumbrarse, con el objetivo de ayudar a las empresas a <b class="neon-m">adaptarse</b> a ellas y ser más <b>competitivas e innovadoras</b> en el mercado.</p></div>
+ <div class="grid g2">
+  <div class="card flash"><b class="neon-m">¿Qué es el “hype”?</b><button class="btn sm gr" style="margin-left:10px" onclick="this.parentNode.classList.toggle('open')">Ver</button><div class="ans">El <b>hype</b> es la emoción inicial; la <b>moda</b> es cuando esa emoción ya fue adoptada por muchas personas. El coolhunting “caza” los hypes.</div></div>
+  <div class="card flash"><b class="neon-g">¿Cool + Hunting?</b><button class="btn sm gr" style="margin-left:10px" onclick="this.parentNode.classList.toggle('open')">Ver</button><div class="ans"><b>Cool</b> = lo relevante/original; <b>Hunting</b> = cazar. Es “cazar” señales cool antes de que se masifiquen.</div></div>
+ </div>
+</section>
+
+<section class="slide" id="s5"><span class="kicker">Elementos de lo “cool”</span><h2 class="sec">✨ Los elementos de lo “Cool”</h2>
+ <div class="grid g3">
+  <div class="card center"><b class="neon-c">Relevancia</b></div>
+  <div class="card center"><b class="neon-c">Apropiación</b></div>
+  <div class="card center"><b class="neon-m">Accesible</b></div>
+  <div class="card center"><b class="neon-m">Cobertura</b></div>
+  <div class="card center"><b class="neon-g">Originalidad</b></div>
+  <div class="card center"><b class="neon-g">Sujeto</b></div>
+ </div>
+ <div class="card flash" style="margin-top:14px"><b class="neon-y">Originalidad (sección de referencia)</b><button class="btn sm gr" style="margin-left:10px" onclick="this.parentNode.classList.toggle('open')">Ver</button><div class="ans">Ser o proyectar una ilusión de originalidad; parecer importante y accesible para que alguien pueda imitarlo.</div></div>
+</section>
+
+<section class="slide" id="s6"><span class="kicker">2 · ICI</span><h2 class="sec">🌐 Inteligencia Comercial Internacional</h2>
+ <div class="card" style="margin-bottom:14px"><p style="font-size:15px;line-height:1.6">Es la <b class="neon-c">sistemática recopilación, análisis y síntesis</b> de información del mercado sobre problemas y oportunidades relacionados con la transferencia de bienes; su finalidad es <b>afinar y evaluar acciones de marketing</b>, tomar decisiones y <b class="neon-m">minimizar riesgos de inversión</b>.</p>
+ <p style="font-size:13.5px;margin-top:8px;color:#bfe9f5"><b>Business Intelligence:</b> proceso permanente e interactivo que recopila información relevante para analizar, evaluar y distribuir información oportuna y precisa que soporte la toma de decisiones de venta.</p></div>
+ <div class="grid g3">
+  <div class="card"><b class="neon-c">Estructura</b><div style="margin-top:8px"><span class="tag">Demanda</span><span class="tag">Tendencias</span><span class="tag">Entorno</span><span class="tag">Perfil país</span></div></div>
+  <div class="card"><b class="neon-m">Limitaciones y regulaciones</b><div style="margin-top:8px"><span class="tag">Ambientales</span><span class="tag">Barreras arancelarias</span><span class="tag">No arancelarias</span><span class="tag">Obstáculos técnicos</span></div></div>
+  <div class="card"><b class="neon-g">Mercado</b><div style="margin-top:8px"><span class="tag">Consumidor</span><span class="tag">Competencia</span><span class="tag">Oportunidades</span><span class="tag">Precios</span><span class="tag">Distribución</span><span class="tag">Clientes/Proveedores</span></div></div>
+ </div>
+</section>
+
+<section class="slide" id="s7"><span class="kicker">3 · Fundamentos</span><h2 class="sec">🧭 Fundamentos de la ICI</h2>
+ <p class="sub">Pulsa cada fundamento:</p>
+ <div class="btnrow" id="fundBtns"></div>
+ <div class="card" id="fundInfo" style="min-height:80px"><b class="neon-y">Selecciona un fundamento</b>.</div>
+</section>
+
+<section class="slide" id="s8"><span class="kicker">¿Por qué es importante?</span><h2 class="sec">💡 Beneficios de la ICI</h2>
+ <div class="grid g2">
+  <div class="card"><ul style="font-size:13.5px;line-height:2;padding-left:18px"><li>Reduce riesgos de mercado.</li><li>Anticipa cambios en el mercado.</li><li>Identifica oportunidades antes/mejor que la competencia.</li><li>Alta calidad de información de cliente/competidor.</li><li>Disminuye costos de venta.</li></ul></div>
+  <div class="card"><ul style="font-size:13.5px;line-height:2;padding-left:18px"><li>Mejora control y administración de ventas.</li><li>Mejora conocimiento de la competencia.</li><li>Optimiza distribución de la información interna.</li><li>Facilita planeamiento y ejecución.</li><li>Permite priorizar inversión en el mercado.</li></ul></div>
+ </div>
+</section>
+
+<section class="slide" id="s9"><span class="kicker">Errores</span><h2 class="sec">⚠ Errores en Inteligencia Comercial</h2>
+ <div class="grid g2">
+  <div class="card flash"><b class="neon-o">Información</b><button class="btn sm gr" style="margin-left:10px" onclick="this.parentNode.classList.toggle('open')">Ver</button><div class="ans">No validar la información ni que sea medible; no usar información actual; no ser ordenada, sistemática y planificada.</div></div>
+  <div class="card flash"><b class="neon-m">Análisis</b><button class="btn sm gr" style="margin-left:10px" onclick="this.parentNode.classList.toggle('open')">Ver</button><div class="ans">Atender rumores u opiniones; subestimar o sobreestimar en el análisis y conclusiones; no valorar a los competidores; no preparar planes de contingencia.</div></div>
+ </div>
+ <div class="card" style="margin-top:14px"><h3 class="neon-y">Antes de hacer ICI (entorno competitivo)</h3><div style="margin-top:8px"><span class="tag">Estrategia, estructura y rivalidad</span><span class="tag">Industrias relacionadas y de apoyo</span><span class="tag">Condiciones de la demanda</span><span class="tag">Sectores afines y auxiliares</span></div>
+ <div class="note">Primero comprender la <b>capacidad interna</b> de la empresa y su <b>entorno competitivo</b>.</div></div>
+</section>
+
+<section class="slide" id="s10"><span class="kicker">4 · Fuentes</span><h2 class="sec">🗂 Clasificación de fuentes de ICI</h2>
+ <div class="btnrow">
+  <button class="btn sm active-opt" id="srcB0" onclick="showSrc(0)">INFORMES</button>
+  <button class="btn sm mg" id="srcB1" onclick="showSrc(1)">ANÁLISIS</button>
+  <button class="btn sm yl" id="srcB2" onclick="showSrc(2)">GRÁFICO</button>
+ </div>
+ <div id="srcPanel"></div>
+</section>
+
+<section class="slide" id="s11"><span class="kicker">Panorama global</span><h2 class="sec">🌎 Comercio nacional e internacional</h2>
+ <div class="grid g2">
+  <div class="card"><canvas id="chartExp" style="height:240px"></canvas></div>
+  <div class="card"><h3 class="neon-y">Lectura</h3><p style="font-size:14px;line-height:1.7;margin-top:6px">El panorama de <b>exportaciones</b> muestra la importancia de leer el entorno antes de decidir mercados. La ICI convierte datos en <b>decisiones</b>.</p>
+  <div class="note">Ejemplo histórico: solicitar información de café hace 25 años era costoso y lento (≈1 mes); hoy la ICI lo hace oportuno y productivo.</div></div>
+ </div>
+</section>
+
+<section class="slide" id="s12"><span class="kicker">5 · Ética</span><h2 class="sec">⚖ Ética en la investigación de mercados</h2>
+ <div class="card" style="margin-bottom:14px"><p style="font-size:14px;line-height:1.7"><b class="neon-c">ESOMAR</b> (European Society for Opinion and Marketing Research) es la organización mundial que regula la elaboración de investigación de mercados, promoviendo valores para una efectiva toma de decisiones global.</p></div>
+ <div class="grid g2">
+  <div class="card flash"><b class="neon-m">Dilema ético</b><button class="btn sm gr" style="margin-left:10px" onclick="this.parentNode.classList.toggle('open')">Ver</button><div class="ans">El investigador está obligado a presentar toda la información <b>sin adulterarla</b>; debe definir el problema más acertado para ayudar a decidir a su cliente.</div></div>
+  <div class="card flash"><b class="neon-g">Principios</b><button class="btn sm gr" style="margin-left:10px" onclick="this.parentNode.classList.toggle('open')">Ver</button><div class="ans">Legal, veraz, objetiva y con métodos científicos; no desacreditar la profesión ni usar la información para provecho personal; libre competencia; separada de actividades comerciales dirigidas a entrevistados.</div></div>
+ </div>
+</section>
+
+<section class="slide" id="s13"><span class="kicker">Apliquemos lo aprendido</span><h2 class="sec">✍ Actividad</h2>
+ <div class="grid g2">
+  <div class="card flash"><b class="neon-c">Actividad grupal</b><button class="btn sm gr" style="margin-left:10px" onclick="this.parentNode.classList.toggle('open')">Ver</button><div class="ans">Realizar una <b>infografía en Canva</b> aplicando coolhunting/ICI a un producto peruano con potencial exportador.</div></div>
+  <div class="card flash"><b class="neon-m">Lectura</b><button class="btn sm gr" style="margin-left:10px" onclick="this.parentNode.classList.toggle('open')">Ver</button><div class="ans">“¿Qué es la Inteligencia comercial?” — PROMPERÚ. Prepárate para tu Evaluación Diagnóstica en el Aula Virtual.</div></div>
+ </div>
+</section>
+
+<section class="slide" id="s14"><span class="kicker">Three.js · 3D</span><h2 class="sec">🧊 De datos a decisiones</h2>
+ <p class="sub">Peldaños crecientes: Datos → Información → Inteligencia → Decisión. Pulsa para enfocar:</p>
+ <div class="btnrow">
+  <button class="btn sm" onclick="focus3D(0)">Datos</button>
+  <button class="btn sm yl" onclick="focus3D(1)">Información</button>
+  <button class="btn sm mg" onclick="focus3D(2)">Inteligencia</button>
+  <button class="btn sm gr" onclick="focus3D(3)">Decisión</button>
+ </div>
+ <canvas id="threeCanvas" class="view" style="height:320px"></canvas>
+ <div class="card" id="threeDesc" style="margin-top:12px"><b class="neon-c">Escena 3D:</b> la ICI transforma datos en decisiones oportunas.</div>
+</section>
+
+<section class="slide" id="s15"><span class="kicker">Integremos lo aprendido</span><h2 class="sec">📈 Conclusiones</h2>
+ <div class="grid g3">
+  <div class="card"><b class="neon-c">Coolhunting + ICI</b><p style="font-size:13px;margin-top:6px;color:#bfe9f5">Permiten recopilar información comercial y tendencias.</p></div>
+  <div class="card"><b class="neon-m">Nichos</b><p style="font-size:13px;margin-top:6px;color:#bfe9f5">Permite identificar nichos de mercado.</p></div>
+  <div class="card"><b class="neon-g">Error a evitar</b><p style="font-size:13px;margin-top:6px;color:#bfe9f5">Asumir que el producto funcionará igual en el mercado destino que en el de origen.</p></div>
+ </div>
+ <div class="card" style="margin-top:14px"><h3 class="neon-y">Fuentes</h3><p style="font-size:13px;line-height:1.9;color:#bfe9f5">Daniels, Radebaugh & Sullivan · Lerma Kirchner · Czinkota & Ronkainen · Kessler · García‑Sordo · Código ICC/ESOMAR.</p></div>
+</section>
+
+<section class="slide" id="s16"><span class="kicker">Repaso · respuestas ocultas</span><h2 class="sec">🎯 Tarjetas de repaso</h2>
+ <div class="grid g2">
+  <div class="card flash"><b class="neon-c">1.</b> ¿Qué es el Coolhunting?<button class="btn sm gr" style="margin-left:10px" onclick="this.parentNode.classList.toggle('open')">Ver</button><div class="ans">Investigación de tendencias que capta señales “cool” emergentes para que las empresas se adapten y sean competitivas.</div></div>
+  <div class="card flash"><b class="neon-m">2.</b> ¿Qué es la ICI?<button class="btn sm gr" style="margin-left:10px" onclick="this.parentNode.classList.toggle('open')">Ver</button><div class="ans">Recopilación, análisis y síntesis sistemática de información del mercado para decidir y minimizar riesgos de inversión.</div></div>
+  <div class="card flash"><b class="neon-y">3.</b> ¿Qué organiza ESOMAR?<button class="btn sm gr" style="margin-left:10px" onclick="this.parentNode.classList.toggle('open')">Ver</button><div class="ans">La ética y regulación mundial de la investigación de mercados.</div></div>
+  <div class="card flash"><b class="neon-g">4.</b> Diferencia tendencia y moda.<button class="btn sm gr" style="margin-left:10px" onclick="this.parentNode.classList.toggle('open')">Ver</button><div class="ans">Tendencia = transformación social/cultural (oportunidades); moda = aceptación masiva (competencia).</div></div>
+ </div>
+</section>
+
+<section class="slide" id="s17"><div style="min-height:80%;display:flex;flex-direction:column;justify-content:center">
+ <span class="kicker">Cierre</span><h2 class="sec">🏁 Ideas fuerza</h2>
+ <div class="grid g4" style="margin:16px 0">
+  <div class="card"><b class="neon-c">Cool</b><p style="font-size:13px;margin-top:6px;color:#bfe9f5">Cazar señales emergentes antes de que se masifiquen.</p></div>
+  <div class="card"><b class="neon-m">ICI</b><p style="font-size:13px;margin-top:6px;color:#bfe9f5">Información oportuna para decidir y reducir riesgos.</p></div>
+  <div class="card"><b class="neon-g">Fuentes</b><p style="font-size:13px;margin-top:6px;color:#bfe9f5">Informes y análisis; validar y actualizar siempre.</p></div>
+  <div class="card"><b class="neon-y">Ética</b><p style="font-size:13px;margin-top:6px;color:#bfe9f5">Legal, veraz, objetiva; sin adulterar información.</p></div>
+ </div>
+ <div class="aviso" style="margin-top:26px">📢 ESTÉN ATENTOS AL INICIO DE LA EVALUACIÓN EN CLASE</div>
+ <p class="center" style="margin-top:16px;font-size:20px;font-weight:900;background:linear-gradient(90deg,var(--cyan),var(--magenta),var(--yellow));-webkit-background-clip:text;background-clip:text;color:transparent">¡MUCHAS GRACIAS! ⚙✨</p>
+</div></section>
+</div>
+
+<footer>
+ <button class="btn sm" onclick="goTo(current-1)">◀ Anterior</button>
+ <input type="range" id="slideSlider" min="0" max="17" value="0" oninput="goTo(+this.value)">
+ <button class="btn sm" onclick="goTo(current+1)">Siguiente ▶</button>
+ <span id="slideCounter">1 / 18</span>
+</footer>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];let current=0;
+const slider=document.getElementById('slideSlider');slider.max=slides.length-1;
+function goTo(i){if(i<0||i>=slides.length)return;slides[current].classList.remove('active');current=i;slides[current].classList.add('active');slides[current].scrollTop=0;slider.value=i;document.getElementById('slideCounter').textContent=(i+1)+' / '+slides.length;document.getElementById('progress').style.width=(i/(slides.length-1)*100)+'%';onSlideEnter(i);}
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'&&e.target.type!=='range')return;if(e.key==='ArrowRight')goTo(current+1);if(e.key==='ArrowLeft')goTo(current-1);});
+function makeBtns(id,infoId,data){const c=document.getElementById(id);data.forEach((d,i)=>{const b=document.createElement('button');b.className='btn sm'+(i%2?' mg':'');b.textContent=d[0];b.onclick=()=>{c.querySelectorAll('.btn').forEach(x=>x.classList.remove('active-opt'));b.classList.add('active-opt');document.getElementById(infoId).innerHTML='<b class="neon-c">'+d[0]+'</b><p style="margin-top:6px;font-size:14px;color:#d9f3fb">'+d[1]+'</p>';};c.appendChild(b);});}
+makeBtns('coolBtns','coolInfo',[['Novedad','Producto nuevo, original y diferente a los demás.'],['Tendencia','Transformación social y cultural; el mercado ve como necesario el producto o servicio.'],['Moda','Masa y aceptación general; concepto novedoso.']]);
+makeBtns('fundBtns','fundInfo',[['Mercados emergentes','Conocer los mercados emergentes.'],['Clientes potenciales','Identificar a los clientes potenciales.'],['Aceptación','Conocer potencialidad y aceptación del producto en un mercado.'],['Perfil consumidor','Tener un perfil del consumidor por producto.'],['Riesgos','Reducir riesgos de demanda, canales, precios y gustos.'],['País destino','Conocer datos principales del país de destino.'],['Competencia','Conocer competidores mundiales y nacionales.']]);
+const srcs=['<div class="card"><h3 class="neon-c">INFORMES</h3><div style="margin-top:8px"><span class="tag">Informes predefinidos</span><span class="tag">Informes a medida</span><span class="tag">Consultas (Query)</span><span class="tag">Alertas</span></div></div>','<div class="card"><h3 class="neon-m">ANÁLISIS</h3><div style="margin-top:8px"><span class="tag">Análisis estadístico</span><span class="tag">Pronósticos (Forecasting)</span><span class="tag">Modelado predictivo / Data Mining</span><span class="tag">Optimización</span><span class="tag">Minería de procesos</span></div></div>','<div class="card"><canvas id="chartSrc" style="height:220px"></canvas></div>'];
+let cS=null;
+function showSrc(i){[0,1,2].forEach(j=>document.getElementById('srcB'+j).classList.toggle('active-opt',j===i));document.getElementById('srcPanel').innerHTML=srcs[i];if(i===2)setTimeout(initChartSrc,80);}
+function initChartSrc(){if(!window.Chart||cS)return;const el=document.getElementById('chartSrc');if(!el)return;cS=new Chart(el,{type:'doughnut',data:{labels:['Informes (4)','Análisis (5)'],datasets:[{data:[4,5],backgroundColor:['rgba(0,240,255,.7)','rgba(255,46,196,.7)'],borderColor:['#00f0ff','#ff2ec4'],borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{color:'#d9f3fb'}}}}});}
+showSrc(0);
+let cE=null;
+function initChartExp(){if(!window.Chart||cE)return;cE=new Chart(document.getElementById('chartExp'),{type:'bar',data:{labels:['Hace 25 años','Hoy (ICI)'],datasets:[{label:'Costo/tiempo de respuesta (índice)',data:[90,15],backgroundColor:'rgba(255,149,0,.7)',borderColor:'#ff9500',borderWidth:2,borderRadius:8},{label:'Productividad de la información (índice)',data:[20,95],backgroundColor:'rgba(57,255,20,.7)',borderColor:'#39ff14',borderWidth:2,borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#d9f3fb'}}},scales:{x:{ticks:{color:'#9fd8e8'},grid:{color:'rgba(255,255,255,.06)'}},y:{beginAtZero:true,max:100,ticks:{color:'#9fd8e8'},grid:{color:'rgba(255,255,255,.08)'}}}}});}
+let threeReady=false,threeFocus=-1,threeMeshes=[],threeGroup=null,threeRenderer,threeScene,threeCam;
+const defs3=[{col:0x00f0ff,d:'<b class="neon-c">DATOS:</b> señales y hechos crudos del mercado.'},{col:0xffe600,d:'<b class="neon-y">INFORMACIÓN:</b> datos ordenados y contextualizados.'},{col:0xff2ec4,d:'<b class="neon-m">INTELIGENCIA:</b> información analizada y oportuna.'},{col:0x39ff14,d:'<b class="neon-g">DECISIÓN:</b> acciones de marketing con menor riesgo.'}];
+function initThree(){if(threeReady)return;if(!window.THREE)return;
+ try{const cv=document.getElementById('threeCanvas');const r=cv.getBoundingClientRect();const w=r.width||800,h=r.height||320;
+ threeRenderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});threeRenderer.setClearColor(0x000000,0);threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));threeRenderer.setSize(w,h,false);
+ threeScene=new THREE.Scene();threeCam=new THREE.PerspectiveCamera(50,w/h,.1,100);threeCam.position.set(0,2.5,8);threeCam.lookAt(0,1,0);
+ threeScene.add(new THREE.AmbientLight(0xffffff,.85));const p1=new THREE.PointLight(0x66ccff,1.2,80);p1.position.set(8,8,8);threeScene.add(p1);
+ const grid=new THREE.GridHelper(14,14,0x1b6fb0,0x0e3a66);grid.position.y=-0.2;threeScene.add(grid);
+ threeGroup=new THREE.Group();threeScene.add(threeGroup);
+ const hs=[0.6,1.2,1.8,2.4];
+ hs.forEach((hh,i)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(1.4,hh,1.4),new THREE.MeshPhongMaterial({color:defs3[i].col,emissive:defs3[i].col,emissiveIntensity:.35,shininess:90}));m.position.set((i-1.5)*1.8,hh/2,0);threeGroup.add(m);threeMeshes.push(m);});
+ let drag=false,px=0,py=0;
+ cv.addEventListener('pointerdown',e=>{drag=true;px=e.clientX;py=e.clientY;});
+ cv.addEventListener('pointermove',e=>{if(!drag)return;threeGroup.rotation.y+=(e.clientX-px)*.008;px=e.clientX;py=e.clientY;});
+ ['pointerup','pointerleave'].forEach(ev=>cv.addEventListener(ev,()=>drag=false));
+ (function anim(t){requestAnimationFrame(anim);if(!drag)threeGroup.rotation.y+=.003;
+  threeMeshes.forEach((m,i)=>{const tg=(threeFocus===i)?1.25:((threeFocus===-1)?1:.85);m.scale.lerp(new THREE.Vector3(tg,tg,tg),.08);m.material.emissiveIntensity+=(((threeFocus===i)?.75:.35)-m.material.emissiveIntensity)*.08;});
+  threeRenderer.render(threeScene,threeCam);})();
+ threeReady=true;}catch(e){}}
+function focus3D(i){threeFocus=(threeFocus===i)?-1:i;document.getElementById('threeDesc').innerHTML=threeFocus===-1?'<b class="neon-c">Escena 3D:</b> la ICI transforma datos en decisiones oportunas.':defs3[i].d;}
+function onSlideEnter(i){const id=slides[i].id;if(id==='s11')setTimeout(initChartExp,120);if(id==='s14')setTimeout(initThree,120);}
+addEventListener('resize',()=>{const id=slides[current].id;if(id==='s14'&&threeRenderer){const r=document.getElementById('threeCanvas').getBoundingClientRect();threeRenderer.setSize(r.width,r.height,false);threeCam.aspect=r.width/r.height;threeCam.updateProjectionMatrix();}});
+goTo(0);
+</script>
+</body>
+</html>
